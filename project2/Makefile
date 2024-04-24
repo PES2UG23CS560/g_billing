@@ -1,18 +1,24 @@
 CC = gcc
-CFLAGS = -Wall -Wextra
-TARGET = grocery_bill
-SRC_MAIN = main.c
-SRC_FUNCTIONS = functions.c
-OBJ_FUNCTIONS = functions.o
-HEADERS = functions.h
+CFLAGS = -Wall -Wextra -std=c99
 
-all: $(TARGET)
+SRC_DIR = src
+OBJ_DIR = obj
+BIN_DIR = bin
 
-$(TARGET): $(OBJ_FUNCTIONS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(SRC_MAIN) $(OBJ_FUNCTIONS)
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
+OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
+EXECUTABLE = $(BIN_DIR)/grocery_bill
 
-$(OBJ_FUNCTIONS): $(SRC_FUNCTIONS) $(HEADERS)
-	$(CC) $(CFLAGS) -c -o $(OBJ_FUNCTIONS) $(SRC_FUNCTIONS)
+.PHONY: all clean
+
+all: $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJ_FILES)
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f $(TARGET) $(OBJ_FUNCTIONS)
+	rm -rf $(OBJ_DIR) $(BIN_DIR)
