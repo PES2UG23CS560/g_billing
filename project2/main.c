@@ -4,14 +4,17 @@
 
 #define MAX_NAME_LENGTH 100
 
-typedef struct {
+typedef struct 
+{
     char *name;
     float price;
     int quantity;
 } Item;
 
-void add_item(Item **bill, int *numItems, int *capacity) {
-    if (*numItems >= *capacity) {
+void add_item(Item **bill, int *numItems, int *capacity) 
+{
+    if (*numItems >= *capacity) 
+    {
         *capacity *= 2;
         *bill = realloc(*bill, *capacity * sizeof(Item));
     }
@@ -28,7 +31,8 @@ void add_item(Item **bill, int *numItems, int *capacity) {
     (*numItems)++;
 }
 
-float calculate_total(Item *bill, int numItems) {
+float calculate_total(Item *bill, int numItems) 
+{
     float total = 0;
     for (int i = 0; i < numItems; i++) {
         total += bill[i].price * bill[i].quantity;
@@ -36,7 +40,8 @@ float calculate_total(Item *bill, int numItems) {
     return total;
 }
 
-void generate_receipt(Item *bill, int numItems, char *customerName, char *customerAddress, float discount) {
+void generate_receipt(Item *bill, int numItems, char *customerName, char *customerAddress, float discount) 
+{
     float total_cost = calculate_total(bill, numItems);
     float discount_amount = total_cost * (discount / 100.0);
     float discounted_total = total_cost - discount_amount;
@@ -55,9 +60,11 @@ void generate_receipt(Item *bill, int numItems, char *customerName, char *custom
     printf("Discounted Total: $%.2f\n\n", discounted_total);
 }
 
-void save_bill_to_file(Item *bill, int numItems, char *filename) {
+void save_bill_to_file(Item *bill, int numItems, char *filename) 
+{
     FILE *file = fopen(filename, "w");
-    if (file == NULL) {
+    if (file == NULL) 
+    {
         printf("Error opening file for writing.\n");
         return;
     }
@@ -70,22 +77,26 @@ void save_bill_to_file(Item *bill, int numItems, char *filename) {
     fclose(file);
 }
 
-void search_item_by_name(Item *bill, int numItems, char *itemName) {
+void search_item_by_name(Item *bill, int numItems, char *itemName) 
+{
     printf("Searching for item: %s\n", itemName);
     int found = 0;
     for (int i = 0; i < numItems; i++) {
-        if (strcmp(bill[i].name, itemName) == 0) {
+        if (strcmp(bill[i].name, itemName) == 0) 
+        {
             printf("Item found: %s\nPrice: $%.2f\nQuantity: %d\n", bill[i].name, bill[i].price, bill[i].quantity);
             found = 1;
             break;
         }
     }
-    if (!found) {
+    if (!found) 
+    {
         printf("Item not found.\n");
     }
 }
 
-int main() {
+int main() 
+{
     int capacity = 5;
     int numItems = 0;
     Item *bill = malloc(capacity * sizeof(Item));
@@ -113,7 +124,8 @@ int main() {
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
-        switch (choice) {
+        switch (choice) 
+        {
             case 1:
                 add_item(&bill, &numItems, &capacity);
                 break;
@@ -138,7 +150,8 @@ int main() {
         }
     } while (choice != 5);
 
-    for (int i = 0; i < numItems; i++) {
+    for (int i = 0; i < numItems; i++) 
+    {
         free(bill[i].name);
     }
     free(bill);
