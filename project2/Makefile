@@ -1,24 +1,19 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99
+CFLAGS = -Wall -Wextra
+TARGET = grocery_bill
 
-SRC_DIR = src
-OBJ_DIR = obj
-BIN_DIR = bin
-
-SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
-OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
-EXECUTABLE = $(BIN_DIR)/grocery_bill
+SRCS = main.c
+OBJS = $(SRCS:.c=.o)
 
 .PHONY: all clean
 
-all: $(EXECUTABLE)
+all: $(TARGET)
 
-$(EXECUTABLE): $(OBJ_FILES)
+$(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
+%.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
+	rm -f $(OBJS) $(TARGET)
